@@ -1,1 +1,7 @@
+# Environment #
 .env
+
+# Django Specific #
+__pycache__
+db.sqlite3
+media
