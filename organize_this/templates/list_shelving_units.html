@@ -7,7 +7,7 @@
         <table>
             <thead>
                 <tr>
-                    <th>Number</th>
+                    <th>Name</th>
                     <th>Room</th>
                     <th>Notes</th>
                 </tr>
@@ -15,7 +15,7 @@
             <tbody>
                 {% for unit in units %}
                     <tr>
-                        <td>{{ unit.id }}</td>
+                        <td>{{ unit.name }}</td>
                         <td>{{ unit.room }}</td>
                         <td>{{ unit.notes }}</td>
                     </tr>
