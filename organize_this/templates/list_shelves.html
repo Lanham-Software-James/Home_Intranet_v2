@@ -7,16 +7,16 @@
         <table>
             <thead>
                 <tr>
-                    <th>Name</th>
                     <th>Unit</th>
+                    <th>Name</th>
                     <th>Notes</th>
                 </tr>
             </thead>
             <tbody>
                 {% for shelf in shelves %}
                     <tr>
-                        <td>{{ shelf.name }}</td>
                         <td>{{ shelf.unit }}</td>
+                        <td>{{ shelf.name }}</td>
                         <td>{{ shelf.notes }}</td>
                     </tr>
                 {% endfor %}

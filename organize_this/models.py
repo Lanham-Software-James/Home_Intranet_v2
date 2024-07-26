@@ -7,5 +7,5 @@ class Shelving_Unit(models.Model):
 
 class Shelf(models.Model):
     name = models.CharField(max_length=100, unique=True)
-    shelving_unit_id = models.ForeignKey(Shelving_Unit, on_delete=models.DO_NOTHING)
+    shelving_unit = models.ForeignKey(Shelving_Unit, on_delete=models.DO_NOTHING)
     notes = models.TextField()
