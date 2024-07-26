@@ -1,0 +1,28 @@
+{% extends "base.html" %} 
+
+{% block title %}Shelving Units{% endblock %}
+
+{% block content %}
+    {% if units %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Number</th>
+                    <th>Room</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for unit in units %}
+                    <tr>
+                        <td>{{ unit.id }}</td>
+                        <td>{{ unit.room }}</td>
+                        <td>{{ unit.notes }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No shelving units are available.</p>
+    {% endif %}
+{% endblock %}
