@@ -1,0 +1,28 @@
+{% extends "base.html" %} 
+
+{% block title %}Shelves{% endblock %}
+
+{% block content %}
+    {% if shelves %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Unit</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for shelf in shelves %}
+                    <tr>
+                        <td>{{ shelf.name }}</td>
+                        <td>{{ shelf.unit }}</td>
+                        <td>{{ shelf.notes }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No shelves are available.</p>
+    {% endif %}
+{% endblock %}
