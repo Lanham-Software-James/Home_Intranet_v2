@@ -1,0 +1,18 @@
+<!-- base.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Default Title{% endblock %}</title>
+</head>
+<body>
+    <header>
+        <p>header text</p>
+    </header>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    <footer>
+        <p>footer text</p>
+    </footer>
+</body>
+</html>
