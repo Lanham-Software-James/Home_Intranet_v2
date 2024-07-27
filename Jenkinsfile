@@ -14,7 +14,7 @@ pipeline {
         }
         stage('Build Image') {
             steps {
-                sh "docker build --platform linux/amd64 -t ${DOCKER_IMAGE}:${IMAGE_TAG} ."
+                sh "docker build -t ${DOCKER_IMAGE}:${IMAGE_TAG} ."
                 sh "docker tag ${DOCKER_IMAGE}:${IMAGE_TAG} ${DOCKER_IMAGE}:latest"
             }
         }
