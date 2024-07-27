@@ -9,7 +9,7 @@ pipeline {
         }
         stage('Build Image') {
             steps {
-                sh 'docker build --platform=linux/amd64 -t home-intranet-v2:latest .'
+                sh 'docker build --platform linux/arm/v74 -t home-intranet-v2:latest .'
             }
         }
         stage('Image Tests') {
