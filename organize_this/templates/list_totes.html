@@ -1,0 +1,28 @@
+{% extends "base.html" %} 
+
+{% block title %}Totes{% endblock %}
+
+{% block content %}
+    {% if totes %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Shelf</th>
+                    <th>Name</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for tote in totes %}
+                    <tr>
+                        <td>{{ tote.shelf }}</td>
+                        <td>{{ tote.name }}</td>
+                        <td>{{ tote.notes }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No shelves are available.</p>
+    {% endif %}
+{% endblock %}
