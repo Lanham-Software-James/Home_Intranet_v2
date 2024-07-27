@@ -1,0 +1,43 @@
+{% extends "base.html" %} 
+
+{% block title %}Items{% endblock %}
+
+{% block content %}
+    {% if items %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Unit</th>
+                    <th>Shelf</th>
+                    <th>Tote</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                    <tr>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.unit_name }}</td>
+
+                        {% if item.shelf_name %}
+                            <td>{{ item.shelf_name }}</td>
+                        {% else %}
+                            <td>&nbsp;</td>
+                        {% endif %}
+
+                        {% if item.tote_name %}
+                            <td>{{ item.tote_name }}</td>
+                        {% else %}
+                            <td>&nbsp;</td>
+                        {% endif %}
+
+                        <td>{{ item.notes }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No items are available.</p>
+    {% endif %}
+{% endblock %}

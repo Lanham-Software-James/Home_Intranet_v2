@@ -12,6 +12,7 @@ class Shelf(models.Model):
 
 class Tote(models.Model):
     name = models.CharField(max_length=100, unique=True)
+    unit = models.ForeignKey(Shelving_Unit, on_delete=models.DO_NOTHING)
     shelf = models.ForeignKey(Shelf, on_delete=models.DO_NOTHING)
     notes = models.TextField(blank=True)
 

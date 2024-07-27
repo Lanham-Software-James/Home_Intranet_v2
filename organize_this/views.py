@@ -67,3 +67,43 @@ def list_totes(request):
     }
 
     return HttpResponse(template.render(context, request))
+
+
+#####################################################################################
+#                               function list_items()                               #
+#       This view is called when listing all items at .../organize_this/       #
+#####################################################################################
+def list_items(request):
+    items = Tote.objects.raw(''' 
+                                SELECT 
+                                    oti.id, 
+                                    oti.name, 
+                                    oti.notes, 
+                                    ott.name AS "tote_name",
+                                    ots.name AS "shelf_name",
+                                    otsu.name AS "unit_name" 
+                                FROM 
+                                    organize_this_item oti 
+                                LEFT JOIN 
+                                    organize_this_tote ott 
+                                    ON 
+                                        oti.tote_id = ott.id
+                                LEFT JOIN
+                                    organize_this_shelf ots
+                                    ON
+                                        oti.shelf_id = ots.id
+                                LEFT JOIN
+                                    organize_this_shelving_unit otsu
+                                    ON
+                                        ots.unit_id = otsu.id
+                                        OR
+                                        ott.unit_id = otsu.id
+
+                            ''')
+                                        
+    template = loader.get_template('list_items.html')
+    context = {
+        'items': items,
+    }
+
+    return HttpResponse(template.render(context, request))
