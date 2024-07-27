@@ -28,13 +28,13 @@ def list_shelves(request):
                                         ots.id, 
                                         ots.name, 
                                         ots.notes, 
-                                        otsu.name AS "unit" 
+                                        otsu.name AS "unit_name" 
                                     FROM 
                                         organize_this_shelf ots 
                                     INNER JOIN 
                                         organize_this_shelving_unit otsu 
                                     ON 
-                                        ots.shelving_unit_id = otsu.id''')
+                                        ots.unit_id = otsu.id''')
 
     template = loader.get_template('list_shelves.html')
     context = {
