@@ -2,14 +2,24 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
+        stage('Unit Tests') {
             steps {
-                echo 'Building..'
+                echo 'Running Unit Tests..'
             }
         }
-        stage('Test') {
+        stage('Build Image') {
+            steps {
+                sh 'docker build -t home-intranet-v2:latest .'
+            }
+        }
+        stage('Image Tests') {
             steps {
                 echo 'Testing..'
+            }
+        }
+        stage('Push Image') {
+            steps {
+                echo 'Pushing...'
             }
         }
         stage('Deploy') {
