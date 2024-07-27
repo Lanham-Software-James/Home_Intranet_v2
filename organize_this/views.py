@@ -4,7 +4,12 @@ from organize_this.models import Shelf, Shelving_Unit, Tote
 from django.http import HttpResponse
 from django.template import loader
 
-def shelving_units(request):
+
+#####################################################################################################
+#                                   function list_shelving_units()                                  #
+#       This view is called when listing all shelving units at .../organize_this/shelving_units     #
+#####################################################################################################
+def list_shelving_units(request):
     units = Shelving_Unit.objects.order_by('id')
     template = loader.get_template('list_shelving_units.html')
     context = {
@@ -13,7 +18,12 @@ def shelving_units(request):
 
     return HttpResponse(template.render(context, request))
 
-def shelves(request):
+
+#########################################################################################
+#                                   function list_shelves()                             #
+#       This view is called when listing all shelves at .../organize_this/shelves       #
+#########################################################################################
+def list_shelves(request):
     shelves = Shelf.objects.raw(''' SELECT 
                                         ots.id, 
                                         ots.name, 
@@ -32,6 +42,7 @@ def shelves(request):
     }
 
     return HttpResponse(template.render(context, request))
+
 
 #####################################################################################
 #                               function list_totes()                               #
