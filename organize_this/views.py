@@ -91,13 +91,15 @@ def list_items(request):
                                 LEFT JOIN
                                     organize_this_shelf ots
                                     ON
-                                        oti.shelf_id = ots.id
+                                        (oti.shelf_id = ots.id)
+                                        OR
+                                        (ott.shelf_id = ots.id)
                                 LEFT JOIN
                                     organize_this_shelving_unit otsu
                                     ON
-                                        ots.unit_id = otsu.id
+                                        (ots.unit_id = otsu.id)
                                         OR
-                                        ott.unit_id = otsu.id
+                                        (ott.shelf_id = ots.id AND ots.unit_id = otsu.id)
 
                             ''')
                                         
