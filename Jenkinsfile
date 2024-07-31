@@ -38,9 +38,28 @@ pipeline {
                 sh "docker push ${DOCKER_IMAGE}:latest"
             }
         }
+        stage('Create .env File') {
+            steps {
+                def fileContent = """
+                    DEBUG=${DEBUG}
+                    SECRET_KEY=${SECRET_KEY}
+                """
+
+                writeFile file: '.env', text: fileContent
+            }
+        }
         stage('Deploy') {
             steps {
-                echo 'Deploying....'
+                sshagent (credentials: ['pi-server-ssh-credentials']) {
+                    sh  """
+                        scp -o StrictHostKeyChecking=no docker-compose ${REMOTE_HOST}:/opt/stacks/intranet
+                        
+                        cd /opt/stacks/intranet
+                        docker compose down
+                        docker compose up
+
+                        """
+                }
             }
         }
     }
