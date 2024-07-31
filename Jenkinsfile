@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-        label 'Built-In Node'
-    }
+    agent any
 
     environment {
         DOCKER_IMAGE = "jameslanham/home-intranet-v2"
