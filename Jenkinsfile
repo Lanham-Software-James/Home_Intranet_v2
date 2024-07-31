@@ -42,10 +42,10 @@ pipeline {
             steps {
                 script {
                      def fileContent = """
-                        DEBUG=${DEBUG}
-                        SECRET_KEY=${SECRET_KEY}
+                        DEBUG=${credentials(DEBUG)}
+                        SECRET_KEY=${credentials(SECRET_KEY)}
                     """
-                    
+
                     writeFile file: '.env', text: fileContent
                 }
             }
@@ -54,7 +54,7 @@ pipeline {
             steps {
                 sshagent (credentials: ['pi-server-ssh-credentials']) {
                     sh  """
-                        scp -o StrictHostKeyChecking=no docker-compose ${REMOTE_HOST}:/opt/stacks/intranet
+                        scp -o StrictHostKeyChecking=no docker-compose ${credentials(REMOTE_HOST)}:/opt/stacks/intranet
                         
                         cd /opt/stacks/intranet
                         docker compose down
