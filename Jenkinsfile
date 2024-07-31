@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+        label 'jenkins_agent'
+    }
 
     environment {
         DOCKER_IMAGE = "jameslanham/home-intranet-v2"
@@ -47,7 +49,7 @@ pipeline {
                             DEBUG=${DEBUG}
                             SECRET_KEY=${SECRET_KEY}
                         """
-    
+
                         writeFile file: '.env', text: fileContent
                     }
                 }
