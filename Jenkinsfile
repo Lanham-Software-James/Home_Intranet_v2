@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label 'jenkins_agent'
+        label 'Built-In Node'
     }
 
     environment {
