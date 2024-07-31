@@ -40,12 +40,14 @@ pipeline {
         }
         stage('Create .env File') {
             steps {
-                def fileContent = """
-                    DEBUG=${DEBUG}
-                    SECRET_KEY=${SECRET_KEY}
-                """
-
-                writeFile file: '.env', text: fileContent
+                script {
+                     def fileContent = """
+                        DEBUG=${DEBUG}
+                        SECRET_KEY=${SECRET_KEY}
+                    """
+                    
+                    writeFile file: '.env', text: fileContent
+                }
             }
         }
         stage('Deploy') {
