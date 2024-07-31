@@ -40,34 +40,34 @@ pipeline {
                 sh "docker push ${DOCKER_IMAGE}:latest"
             }
         }
-        stage('Create .env File') {
-            steps {
-                script {
-                    withCredentials([string(credentialsId: 'DEBUG', variable: 'DEBUG'), string(credentialsId: 'SECRET_KEY', variable: 'SECRET_KEY')]) {
+        // stage('Create .env File') {
+        //     steps {
+        //         script {
+        //             withCredentials([string(credentialsId: 'DEBUG', variable: 'DEBUG'), string(credentialsId: 'SECRET_KEY', variable: 'SECRET_KEY')]) {
                        
-                        def fileContent = """
-                            DEBUG=${DEBUG}
-                            SECRET_KEY=${SECRET_KEY}
-                        """
+        //                 def fileContent = """
+        //                     DEBUG=${DEBUG}
+        //                     SECRET_KEY=${SECRET_KEY}
+        //                 """
 
-                        writeFile file: '.env', text: fileContent
-                    }
-                }
-            }
-        }
-        stage('Deploy') {
-            steps {
-                sshagent (credentials: ['pi-server-ssh-credentials']) {
-                    sh  """
-                        scp -o StrictHostKeyChecking=no docker-compose ${credentials(REMOTE_HOST)}:/opt/stacks/intranet
+        //                 writeFile file: '.env', text: fileContent
+        //             }
+        //         }
+        //     }
+        // }
+        // stage('Deploy') {
+        //     steps {
+        //         sshagent (credentials: ['pi-server-ssh-credentials']) {
+        //             sh  """
+        //                 scp -o StrictHostKeyChecking=no docker-compose ${credentials(REMOTE_HOST)}:/opt/stacks/intranet
                         
-                        cd /opt/stacks/intranet
-                        docker compose down
-                        docker compose up
+        //                 cd /opt/stacks/intranet
+        //                 docker compose down
+        //                 docker compose up
 
-                        """
-                }
-            }
-        }
+        //                 """
+        //         }
+        //     }
+        // }
     }
 }
