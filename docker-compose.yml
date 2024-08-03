@@ -1,7 +1,9 @@
 services:
   django:
-    build: .
-    container_name: home_intranet_v2
+    build: 
+      context: .
+      dockerfile: Dockerfile.Django
+    container_name: home-intranet-v2-django
     command: >
       sh -c "python manage.py migrate --noinput &&
              python manage.py collectstatic --no-input --clear &&
@@ -13,7 +15,10 @@ services:
       - "8000:8000"
 
   nginx:
-    image: nginx:1.19-alpine
+    build: 
+      context: .
+      dockerfile: Dockerfile.Nginx
+    container_name: home-intranet-v2-nginx
     ports:
       - "8080:80"
     volumes:
