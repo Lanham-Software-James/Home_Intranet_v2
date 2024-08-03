@@ -1,12 +1,29 @@
 services:
-   intranet:
-    image: jameslanham/home-intranet-v2:latest
+  django:
+    build: .
     container_name: home_intranet_v2
-    command: sh -c "python3 manage.py migrate --noinput && python3 manage.py collectstatic --noinput && python manage.py runserver 0.0.0.0:8000"
-    restart: unless-stopped
+    command: >
+      sh -c "python manage.py migrate --noinput &&
+             python manage.py collectstatic --no-input --clear &&
+             python manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/app
+      - static_volume:/app/staticfiles
     ports:
-      - "80:8000"
-    env_file:
-      - .env
+      - "8000:8000"
+    environment:
+      - DEBUG=True
+
+  nginx:
+    image: nginx:1.19-alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - static_volume:/app/staticfiles
+    depends_on:
+      - django
+
+volumes:
+  static_volume:
+  
