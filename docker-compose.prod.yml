@@ -1,0 +1,25 @@
+services:
+  django:
+    image: jameslanham/home-intranet-v2-django:latest
+    container_name: home-intranet-v2-django
+    command: >
+      sh -c "python manage.py migrate --noinput &&
+             python manage.py collectstatic --no-input --clear &&
+             python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - static_volume:/app/staticfiles
+    ports:
+      - "8000:8000"
+
+  nginx:
+    image: jameslanham/home-intranet-v2-nginx:latest
+    container_name: home-intranet-v2-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - static_volume:/app/staticfiles
+    depends_on:
+      - django
+
+volumes:
+  static_volume:
