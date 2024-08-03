@@ -10,7 +10,12 @@ WORKDIR /app
 
 # Install dependencies
 COPY requirements.txt /app/
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install gunicorn
 
 # Copy the project code into the container
 COPY . /app/
+
+EXPOSE 8000
+
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "home_intranet_v2.wsgi:application"]
