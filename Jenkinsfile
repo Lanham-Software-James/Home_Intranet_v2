@@ -15,6 +15,22 @@ pipeline {
             }
         }
 
+        stage('Create .env File') {
+            steps {
+                script {
+                    withCredentials([string(credentialsId: 'DEBUG', variable: 'DEBUG'), string(credentialsId: 'SECRET_KEY', variable: 'SECRET_KEY')]) {
+                       
+                        def fileContent = """
+                            DEBUG=${DEBUG}
+                            SECRET_KEY=${SECRET_KEY}
+                        """
+
+                        writeFile file: '.env', text: fileContent
+                    }
+                }
+            }
+        }
+
         stage('Build Django Image') {
             steps {
                 sh "docker build -f Dockerfile.Django -t ${DOCKER_IMAGE_DJANGO}:${IMAGE_TAG} ."
