@@ -20,10 +20,7 @@ pipeline {
                 script {
                     withCredentials([string(credentialsId: 'DEBUG', variable: 'DEBUG'), string(credentialsId: 'SECRET_KEY', variable: 'SECRET_KEY')]) {
                        
-                        def fileContent = """
-                            DEBUG=${DEBUG}
-                            SECRET_KEY=${SECRET_KEY}
-                        """
+                        def fileContent = "DEBUG=${DEBUG}\nSECRET_KEY=${SECRET_KEY}"
 
                         writeFile file: '.env', text: fileContent
                     }
