@@ -78,5 +78,26 @@ pipeline {
                 sh "docker image prune -af"
             }
         }
+
+        stage('Deploy Application') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'pi-server-ssh-credentials', passwordVariable: 'SSH_PASSWORD', usernameVariable: 'SSH_USERNAME'), string(string(credentialsId: 'REMOTE_HOST', variable: 'REMOTE_HOST'))]) {
+                        def remote = [:]
+                        remote.name = REMOTE_HOST
+                        remote.host = REMOTE_HOST
+                        remote.user = SSH_USER
+                        remote.password = SSH_PASSWORD
+                        remote.allowAnyHosts = true
+
+                        sshCommand remote: remote, command: "cd /opt/stacks/intranet"
+                        sshCommand remote: remote, command: "docker compose down"
+                        sshCommand remote: remote, command: "rm -rf docker-compose.yml"
+                        sshPut remote: remote, from: 'docker-compose.prod.yml', into: './docker-compose.yml'
+                        sshCommand remote: remote, command: "docker compose up -d"
+                    }
+
+                
+            }
+        }
     }
 }
