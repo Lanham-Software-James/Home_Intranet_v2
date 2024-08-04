@@ -72,5 +72,11 @@ pipeline {
                 sh "docker push ${DOCKER_IMAGE_NGINX}:latest"
             }
         }
+
+        stage('Prune Images') {
+            steps {
+                sh "docker image prune -af"
+            }
+        }
     }
 }
