@@ -90,8 +90,15 @@ pipeline {
                         remote.password = password
                         remote.allowAnyHosts = true
 
-                        sshCommand remote: remote, command: "cd /opt/stacks/intranet"                        
-                        sshCommand remote: remote, command: "docker compose down"
+                        sshCommand remote: remote, command: "cd /opt/stacks/intranet"   
+                        
+                        try {
+                            sshCommand remote: remote, command: "docker compose down"
+                        } catch (Exception e) {
+                            echo "Failed to execute docker-compose down: ${e.getMessage()}"
+                            throw e
+                        }                     
+                        
                         sshCommand remote: remote, command: "rm -rf docker-compose.yml"
                         sshPut remote: remote, from: 'docker-compose.prod.yml', into: './docker-compose.yml'
                         sshCommand remote: remote, command: "docker compose up -d"
