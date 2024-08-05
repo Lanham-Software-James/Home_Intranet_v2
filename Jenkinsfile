@@ -82,12 +82,12 @@ pipeline {
         stage('Deploy Application') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'pi-server-ssh-credentials', passwordVariable: 'SSH_PASSWORD', usernameVariable: 'SSH_USERNAME'), string(string(credentialsId: 'REMOTE_HOST', variable: 'REMOTE_HOST'))]) {
+                    withCredentials([usernamePassword(credentialsId: 'pi-server-ssh-credentials', passwordVariable: 'password', usernameVariable: 'user'), string(credentialsId: 'REMOTE_HOST', variable: 'host')]) {
                         def remote = [:]
-                        remote.name = REMOTE_HOST
-                        remote.host = REMOTE_HOST
-                        remote.user = SSH_USER
-                        remote.password = SSH_PASSWORD
+                        remote.name = host
+                        remote.host = host
+                        remote.user = user
+                        remote.password = password
                         remote.allowAnyHosts = true
 
                         sshCommand remote: remote, command: "cd /opt/stacks/intranet"
