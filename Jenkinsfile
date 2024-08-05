@@ -81,7 +81,8 @@ pipeline {
 
         stage('Deploy Application') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'pi-server-ssh-credentials', passwordVariable: 'SSH_PASSWORD', usernameVariable: 'SSH_USERNAME'), string(string(credentialsId: 'REMOTE_HOST', variable: 'REMOTE_HOST'))]) {
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'pi-server-ssh-credentials', passwordVariable: 'SSH_PASSWORD', usernameVariable: 'SSH_USERNAME'), string(string(credentialsId: 'REMOTE_HOST', variable: 'REMOTE_HOST'))]) {
                         def remote = [:]
                         remote.name = REMOTE_HOST
                         remote.host = REMOTE_HOST
@@ -95,8 +96,7 @@ pipeline {
                         sshPut remote: remote, from: 'docker-compose.prod.yml', into: './docker-compose.yml'
                         sshCommand remote: remote, command: "docker compose up -d"
                     }
-
-                
+                }
             }
         }
     }
