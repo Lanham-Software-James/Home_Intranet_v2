@@ -18,9 +18,13 @@ pipeline {
         stage('Create .env File') {
             steps {
                 script {
-                    withCredentials([string(credentialsId: 'DEBUG', variable: 'DEBUG'), string(credentialsId: 'SECRET_KEY', variable: 'SECRET_KEY')]) {
+                    withCredentials([   string(credentialsId: 'DEBUG', variable: 'DEBUG'), 
+                                        string(credentialsId: 'SECRET_KEY', variable: 'SECRET_KEY'), 
+                                        string(credentialsId: 'POSTGRES_DB', variable: 'POSTGRES_DB'), 
+                                        string(credentialsId: 'POSTGRES_USER', variable: 'POSTGRES_USER'), 
+                                        string(credentialsId: 'POSTGRES_PASSWORD', variable: 'POSTGRES_PASSWORD')]) {
                        
-                        def fileContent = "DEBUG=${DEBUG}\nSECRET_KEY=${SECRET_KEY}"
+                        def fileContent = "DEBUG=${DEBUG}\nSECRET_KEY=${SECRET_KEY}\nPOSTGRES_DB=${POSTGRES_DB}\nPOSTGRES_USER=${POSTGRES_USER}\nPOSTGRES_PASSWORD=${POSTGRES_PASSWORD}"
 
                         writeFile file: '.env', text: fileContent
                     }
