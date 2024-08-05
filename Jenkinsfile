@@ -90,7 +90,6 @@ pipeline {
                         remote.password = password
                         remote.allowAnyHosts = true
 
-                        sshCommand remote: remote, command: "sudo su"
                         sshCommand remote: remote, command: "cd /opt/stacks/intranet"                        
                         sshCommand remote: remote, command: "docker compose down"
                         sshCommand remote: remote, command: "rm -rf docker-compose.yml"
