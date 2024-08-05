@@ -1,4 +1,17 @@
 services:
+  db:
+    image: postgres:13
+    container_name: home-intranet-v2-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
   django:
     image: jameslanham/home-intranet-v2-django:latest
     container_name: home-intranet-v2-django
@@ -6,11 +19,12 @@ services:
       sh -c "python manage.py migrate --noinput &&
              python manage.py collectstatic --no-input --clear &&
              python manage.py runserver 0.0.0.0:8000"
+    depends_on:
+      - db
     ports:
       - "8000:8000"
     restart: unless-stopped
     volumes:
-      - ./db.sqlite3:/app/db.sqlite3
       - static_volume:/app/staticfiles
 
   nginx:
@@ -26,3 +40,4 @@ services:
 
 volumes:
   static_volume:
+  postgres_data:
