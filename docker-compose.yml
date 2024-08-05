@@ -6,6 +6,8 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    networks:
+      - home-intranet-v2-backend
     ports:
       - "5432:5432"
     volumes:
@@ -23,6 +25,9 @@ services:
              python manage.py runserver 0.0.0.0:8000"
     depends_on:
       - db
+    networks:
+      - home-intranet-v2-frontend
+      - home-intranet-v2-backend
     ports:
       - "8000:8000"
     restart: unless-stopped
@@ -37,12 +42,20 @@ services:
     container_name: home-intranet-v2-nginx
     depends_on:
       - django
+    networks:
+      - home-intranet-v2-frontend
     ports:
       - "8080:80"
     restart: unless-stopped
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
       - static_volume:/app/staticfiles
+
+networks:
+  home-intranet-v2-frontend:
+    driver: bridge
+  home-intranet-v2-backend:
+    driver: bridge
 
 volumes:
   static_volume:
