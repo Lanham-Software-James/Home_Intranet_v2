@@ -97,6 +97,7 @@ pipeline {
                         remote.allowAnyHosts = true
 
                         sshCommand remote: remote, command: "docker compose -f ~/intranet/docker-compose.yml down"
+                        sshCommand remote: remote, command: "rm ~/intranet/.env"
                         sshCommand remote: remote, command: "rm ~/intranet/docker-compose.yml"
                         sshPut remote: remote, from: '.env-compose', into: '~/intranet/.env'
                         sshPut remote: remote, from: 'docker-compose.prod.yml', into: '~/intranet/docker-compose.yml'
