@@ -24,9 +24,11 @@ pipeline {
                                         string(credentialsId: 'POSTGRES_USER', variable: 'POSTGRES_USER'), 
                                         string(credentialsId: 'POSTGRES_PASSWORD', variable: 'POSTGRES_PASSWORD')]) {
                        
-                        def fileContent = "DEBUG=${DEBUG}\nSECRET_KEY=${SECRET_KEY}\nPOSTGRES_DB=${POSTGRES_DB}\nPOSTGRES_USER=${POSTGRES_USER}\nPOSTGRES_PASSWORD=${POSTGRES_PASSWORD}"
+                        def mainEnv = "DEBUG=${DEBUG}\nSECRET_KEY=${SECRET_KEY}\nPOSTGRES_DB=${POSTGRES_DB}\nPOSTGRES_USER=${POSTGRES_USER}\nPOSTGRES_PASSWORD=${POSTGRES_PASSWORD}"
+                        writeFile file: '.env', text: mainEnv
 
-                        writeFile file: '.env', text: fileContent
+                        def composeEnv = "POSTGRES_DB=${POSTGRES_DB}\nPOSTGRES_USER=${POSTGRES_USER}\nPOSTGRES_PASSWORD=${POSTGRES_PASSWORD}"
+                        writeFile file: '.env-compose', text: composeEnv
                     }
                 }
             }
@@ -94,16 +96,11 @@ pipeline {
                         remote.password = password
                         remote.allowAnyHosts = true
 
-                        sshCommand remote: remote, command: "cd /opt/stacks/intranet"
-                        try {
-                            sshCommand remote: remote, command: "docker compose down"
-                        } catch (Exception e) {
-                            echo "Failed to execute docker-compose down: ${e.getMessage()}"
-                            throw e
-                        }
-                        sshCommand remote: remote, command: "rm -rf docker-compose.yml"
-                        sshPut remote: remote, from: 'docker-compose.prod.yml', into: './docker-compose.yml'
-                        sshCommand remote: remote, command: "docker compose up -d"
+                        sshCommand remote: remote, command: "docker compose -f /opt/stacks/intranet/docker-compose.yml down"
+                        sshCommand remote: remote, command: "rm -rf /opt/stacks/intranet/docker-compose.yml"
+                        sshPut remote: remote, from: '.env-compose', into: '/opt/stacks/intranet/.env'
+                        sshPut remote: remote, from: 'docker-compose.prod.yml', into: '/opt/stacks/intranet/docker-compose.yml'
+                        sshCommand remote: remote, command: "docker compose -f /opt/stacks/intranet/docker-compose.yml up -d"
                     }
                 }
             }
