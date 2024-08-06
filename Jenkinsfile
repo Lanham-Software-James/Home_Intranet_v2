@@ -26,9 +26,6 @@ pipeline {
                        
                         def mainEnv = "DEBUG=${DEBUG}\nSECRET_KEY=${SECRET_KEY}\nPOSTGRES_DB=${POSTGRES_DB}\nPOSTGRES_USER=${POSTGRES_USER}\nPOSTGRES_PASSWORD=${POSTGRES_PASSWORD}"
                         writeFile file: '.env', text: mainEnv
-
-                        def composeEnv = "POSTGRES_DB=${POSTGRES_DB}\nPOSTGRES_USER=${POSTGRES_USER}\nPOSTGRES_PASSWORD=${POSTGRES_PASSWORD}"
-                        writeFile file: '.env-compose', text: composeEnv
                     }
                 }
             }
@@ -97,10 +94,13 @@ pipeline {
                         remote.allowAnyHosts = true
 
                         sshCommand remote: remote, command: "docker compose -f ~/intranet/docker-compose.yml down"
-                        sshCommand remote: remote, command: "rm ~/intranet/.env"
+
                         sshCommand remote: remote, command: "rm ~/intranet/docker-compose.yml"
-                        sshPut remote: remote, from: '.env-compose', into: '~/intranet/.env'
+                        sshCommand remote: remote, command: "rm ~/intranet/.env"
+                        
                         sshPut remote: remote, from: 'docker-compose.prod.yml', into: '~/intranet/docker-compose.yml'
+                        sshPut remote: remote, from: '.env', into: '~/intranet/.env'
+                        
                         sshCommand remote: remote, command: "docker compose -f ~/intranet/docker-compose.yml up -d"
                     }
                 }
