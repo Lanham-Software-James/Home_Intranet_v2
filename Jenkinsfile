@@ -93,15 +93,15 @@ pipeline {
                         remote.password = password
                         remote.allowAnyHosts = true
 
-                        sshCommand remote: remote, command: "docker compose -f ~/intranet/docker-compose.yml down"
+                        sshCommand remote: remote, command: "docker compose -f /opt/stacks/intranet/docker-compose.yml down"
 
-                        sshCommand remote: remote, command: "rm ~/intranet/docker-compose.yml"
-                        sshCommand remote: remote, command: "rm ~/intranet/.env"
+                        sshCommand remote: remote, command: "rm /opt/stacks/intranet/docker-compose.yml"
+                        sshCommand remote: remote, command: "rm /opt/stacks/intranet/.env"
                         
-                        sshPut remote: remote, from: 'docker-compose.prod.yml', into: '~/intranet/docker-compose.yml'
-                        sshPut remote: remote, from: '.env', into: '~/intranet/.env'
+                        sshPut remote: remote, from: 'docker-compose.prod.yml', into: '/opt/stacks/intranet/docker-compose.yml'
+                        sshPut remote: remote, from: '.env', into: '/opt/stacks/intranet/.env'
                         
-                        sshCommand remote: remote, command: "docker compose -f ~/intranet/docker-compose.yml up -d"
+                        sshCommand remote: remote, command: "docker compose -f /opt/stacks/intranet/docker-compose.yml up -d"
                     }
                 }
             }
